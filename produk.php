@@ -25,7 +25,7 @@ check_role(['admin', 'kasir', 'gudang', 'user']);
     <script
       type="text/javascript"
       src="https://app.sandbox.midtrans.com/snap/snap.js"
-      data-client-key="SB-Mid-client-AeBOfGXsirsr6p_x"
+      data-client-key=
     ></script>
 
     <script
