@@ -74,6 +74,7 @@ body {
   padding-bottom: 0.5rem;
   border-bottom: 0.1rem solid var(--primary);
   transform: scaleX(0);
+  transition: 0.2s linear;
 }
 
 .navbar .navbar-nav a:hover::after {
@@ -127,6 +128,34 @@ body {
   margin-right: 1.5rem;
   color: var(--bg);
 }
+
+.navbar .navbar-nav #logout-link-dynamic {
+      display: flex; /* Agar ikon berada di tengah */
+      align-items: center;
+      color: var(--bg);
+      margin: 1.5rem;
+      padding: 0.5rem;
+      font-size: 2rem;
+  }
+  
+  /* Targetkan sapaan user (jika Anda ingin menampilkannya juga di mobile) */
+  .navbar .navbar-nav #user-info-dynamic {
+      display: block;
+      color: var(--bg);
+      margin: 1.5rem;
+      padding: 0.5rem;
+      font-size: 2rem;
+      font-weight: bold;
+  }
+  /* ========================================================== */
+
+  .navbar .navbar-nav a::after {
+    transform-origin: 0 0;
+  }
+
+  .navbar .navbar-nav a:hover::after {
+    transform: scaleX(0.2);
+  }
 
 /* shopping cart */
 #shopping-cart-button {
@@ -195,7 +224,7 @@ body {
   font-size: 1.1rem;
 }
 
-.shopping-cart h4{
+.shopping-cart h4 {
   font-size: 1.6rem;
   margin-top: -1rem;
   text-align: center;
@@ -206,49 +235,170 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
-  border-top: 1px dashed black ;
+  border-top: 1px dashed black;
   margin-top: 1rem;
   padding: 1rem;
 }
 
-.form-container h5{
-text-align: center;
-font-size: 1rem;
+.form-container h5 {
+  text-align: center;
+  font-size: 1rem;
 }
 
-.form-container form{
-width: 100%;
-text-align: center;
+.form-container form {
+  width: 100%;
+  text-align: center;
 }
 
-.form-container label{
+.form-container label {
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 1rem 0;
 }
 
-
-.form-container span{
-text-align: right;
+.form-container span {
+  text-align: right;
 }
 
-.form-container input{
-background-color: #ddd;
-padding: 5px;
-font-size: 1rem;
-width: 70%;
+.form-container input {
+  background-color: #ddd;
+  padding: 5px;
+  font-size: 1rem;
+  width: 70%;
 }
 
-.form-container .checkout-button{
-padding: 6px 14px;
-background-color: royalblue;
-color: white;
-font-weight: bold;
-font-size: 1rem;
-border-radius: 20px;
-margin: 1rem auto;
-cursor: pointer;
+.form-container .checkout-button {
+  padding: 6px 14px;
+  background-color: royalblue;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 20px;
+  margin: 1rem auto;
+  cursor: pointer;
+}
+
+.form-container .checkout-button.disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* animasi payment sukses */
+.payment-success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: grid;
+  place-items: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.payment-success-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.success-message-box {
+  background-color: #fff;
+  color: #333;
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  text-align: center;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.payment-success-overlay.show .success-message-box {
+  transform: scale(1);
+}
+
+.success-message-box h2 {
+  font-size: 2rem;
+  color: #4caf50;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.success-message-box p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Animasi Tanda Centang (Checkmark) */
+.checkmark-container {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.checkmark-circle {
+  width: 100px;
+  height: 100px;
+  border: 4px solid #4caf50;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  transform: scale(0);
+  animation: scale-in 0.4s 0.2s ease-out forwards;
+}
+
+.checkmark-stem {
+  position: absolute;
+  background-color: #4caf50;
+  left: 48px;
+  top: 20px;
+  width: 4px;
+  height: 0;
+  transform: rotate(45deg);
+  animation: draw-stem 0.3s 0.6s ease-out forwards;
+}
+
+.checkmark-kick {
+  position: absolute;
+  background-color: #4caf50;
+  left: 28px;
+  top: 50px;
+  width: 4px;
+  height: 0;
+  transform: rotate(-45deg);
+  animation: draw-kick 0.3s 0.9s ease-out forwards;
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes draw-stem {
+  from {
+    height: 0;
+  }
+  to {
+    height: 40px;
+  }
+}
+
+@keyframes draw-kick {
+  from {
+    height: 0;
+  }
+  to {
+    height: 75px;
+  }
 }
 
 /* hero section */
@@ -265,25 +415,10 @@ cursor: pointer;
   mask-image: linear-gradient(rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 1));
 }
 
-/* .hero::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  height: 30%;
-  background: linear-gradient(
-    0deg,
-    rgba(1, 1, 3, 1) 8%,
-    rgba(255, 255, 255, 0) 50%
-  );
-} */
-
 .hero .mask-container {
   position: absolute;
-  /* background-color: salmon; */
   inset: 0;
-  mask-image: url(/img/masking-2.png);
+  mask-image: url(../img/masking-2.png);
   mask-repeat: no-repeat;
   mask-size: cover;
   mask-position: center;
@@ -291,7 +426,6 @@ cursor: pointer;
 
 .hero .content {
   padding: 1.4rem 7%;
-  /* max-width: 60rem; */
   width: 100%;
   text-align: center;
   position: fixed;
@@ -640,6 +774,20 @@ footer .credit a {
   padding: 1rem 1.6rem;
 }
 
+/* ========================================================== */
+/* ATURAN RESPONSIVE BARU UNTUK LOGOUT */
+/* ========================================================== */
+
+/* Aturan Default (Desktop) */
+.mobile-only {
+  display: none;
+}
+.desktop-only {
+  display: inline-flex; /* Gunakan flex agar ikon dan teks bisa diatur */
+  align-items: center;
+}
+
+
 /* media queries */
 
 /* Laptop */
@@ -735,6 +883,20 @@ footer .credit a {
 
   .modal-content {
     flex-wrap: wrap;
+  }
+
+  /* ATURAN RESPONSIVE BARU UNTUK LOGOUT (MOBILE) */
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+    /* Samakan styling dengan menu lain di hamburger */
+    color: var(--bg);
+    margin: 1.5rem;
+    padding: 0.5rem;
+    font-size: 2rem;
   }
 }
 

@@ -1,338 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toko online AEJ</title>
-    <!-- icon -->
+    <title>Login & Registrasi - Toko AEJ</title>
+    
     <script src="https://unpkg.com/feather-icons"></script>
-    <!-- Font -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,700&display=swap"
       rel="stylesheet"
     />
-    <!-- style gwe -->
     <link rel="stylesheet" href="CSS/style.css" />
-
-    <!-- Alpine.js -->
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
-    <!-- App.js -->
-    <script src="src/app.js"></script>
-  </head>
-  <body>
-    <!-- Navbar awal -->
-    <nav class="navbar" x-data>
-      <a href="#" class="navbar-logo">Toko <span> AEJ</span></a>
-
-      <!-- navbar tulis tangan -->
-      <div class="navbar-nav">
-        <a href="#home">Home</a>
-        <a href="#about">Tentang kami</a>
-        <a href="#pesan">Pemesanan</a>
-        <a href="#products">Produk</a>
-        <a href="#contact">Kontak</a>
-      </div>
-
-      <!-- icon navbar -->
-      <div class="navbar-extra">
-        <a href="#" id="search-button"><i data-feather="search">search</i></a>
-        <a href="#" id="shopping-cart-button">
-          <i data-feather="shopping-cart"></i>
-            <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
-      </a>
-        <a href="#" id="hamburger-menu"><i data-feather="menu"></i></a>
-      </div>
-
-      <!-- search form start -->
-      <div class="search-form">
-        <input type="search" id="search-box" placeholder="search here..." />
-        <label for="search-box"><i data-feather="search"></i></label>
-      </div>
-      <!-- search form end -->
-
-      <!-- Shopping card start -->
-      <div class="shopping-cart">
-        <template x-for="(item, index) in $store.cart.items" x-keys="index">
-        <div class="cart-item">
-          <img :src="`img/products/${item.img}`" :alt="item.name" />
-          <div class="item-detail">
-            <h3 x-text="item.name"></h3>
-            <div class="item-price">
-              <span x-text="rupiah(item.price)"></span> &times;
-              <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
-              <span x-text="item.quantity"></span>
-              <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
-              <span x-text="rupiah (item.total)"></span>
-            </div>
-          </div>
+    <style>
+      body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #010101; }
+      .form-container { background-color: #1a1a1a; padding: 2rem 3rem; border-radius: 1rem; border: 1px solid #b6895b; width: 90%; max-width: 400px; box-shadow: 0 0 20px rgba(182, 137, 91, 0.2); }
+      .form-container h2 { color: #fff; text-align: center; margin-bottom: 2rem; font-size: 2.5rem; }
+      .form-container h2 span { color: #b6895b; }
+      .form-container .input-group { position: relative; margin: 1.5rem 0; }
+      .form-container .input-group input { width: 100%; padding: 1rem; font-size: 1rem; color: #fff; background-color: #333; border: 1px solid #555; border-radius: 0.5rem; }
+      .form-container .btn { width: 100%; margin-top: 1.5rem; }
+      .message { color: #e74c3c; text-align: center; margin-top: 1rem; display: none; }
+      .message.success { color: #2ecc71; }
+      .toggle-link { color: #aaa; text-align: center; margin-top: 2rem; font-size: 0.9rem; }
+      .toggle-link a { color: #b6895b; font-weight: 700; text-decoration: none; }
+      .toggle-password { position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); cursor: pointer; color: #aaa; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div id="login-section">
+            <h2>Login <span>AEJ</span></h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="text" id="login-username" placeholder="Username" required />
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Password" required />
+                    <i class="toggle-password" data-feather="eye"></i>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p id="login-message" class="message"></p>
+            </form>
+            <p class="toggle-link">Belum punya akun? <a href="#" id="show-register">Registrasi</a></p>
         </div>
-        </template>
-        <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem;">Cart is Empty</h4>
-        <h4 x-show="$store.cart.items.length">Total :<span x-text="rupiah($store.cart.total)"></span></h4>
-        
-        <div class="form-container" x-show="$store.cart.items.length">
-          <form action="" id="checkoutForm">
-            <h5>Customer Detail</h5>
 
-            <label for="name">
-              <span>Name</span>
-              <input type="text" name="name" id="name">
-            </label> 
-
-            <label for="email">
-              <span>Email</span>
-              <input type="email" name="email" id="email">
-            </label> 
-            
-           <label for="phone">
-  <span>Phone</span>
-  <input type="number" name="phone" id="phone" autocomplete="off">
-</label> 
-
-<button class="checkout-button" type="submit" id="checkout-button" value="Checkout">Checkout</button>
-            </label> 
-          </form>
+        <div id="register-section" style="display: none;">
+            <h2>Registrasi <span>AEJ</span></h2>
+            <form id="register-form">
+                <div class="input-group">
+                    <input type="text" id="register-username" placeholder="Username Baru" required />
+                </div>
+                <div class="input-group">
+                    <input type="email" id="register-email" placeholder="Email" required />
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-password" placeholder="Password (min. 6 karakter)" required />
+                    <i class="toggle-password" data-feather="eye"></i>
+                </div>
+                 <div class="input-group">
+                    <input type="password" id="confirm-password" placeholder="Konfirmasi Password" required />
+                    <i class="toggle-password" data-feather="eye"></i>
+                </div>
+                <button type="submit" class="btn">Registrasi</button>
+                <p id="register-message" class="message"></p>
+            </form>
+            <p class="toggle-link">Sudah punya akun? <a href="#" id="show-login">Login</a></p>
         </div>
-      </div>
-      <!-- Shopping card end -->
-    </nav>
-    <!-- Navbar end -->
-
-    <!-- Hero section start -->
-    <section class="hero" id="home">
-      <div class="mask-container">
-        <main class="content">
-          <h1>Selamat datang di<span> AEJ</span></h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi,
-            modi?
-          </p>
-          <!--<a href="#" class="cta">Pesan Sekarang!</a> --->
-        </main>
-      </div>
-    </section>
-    <!-- Hero section end -->
-
-    <!-- about section start -->
-    <section id="about" class="about">
-      <h2><span>Tentang </span>Kami</h2>
-
-      <div class="row">
-        <div class="about-img">
-          <img src="img/tentang-kami.jpg" alt="Tentang Kami" />
-        </div>
-        <div class="content">
-          <h3>Kenapa harus AEJ?</h3>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero earum
-            ab, nulla mollitia provident dolore?
-          </p>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod,
-            aspernatur?
-          </p>
-        </div>
-      </div>
-    </section>
-    <!-- about section end -->
-
-    <!-- Menu section start -->
-    <section id="pesan" class="pesan">
-      <h2><span>barang</span> Kami</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia facilis
-        minus cum, similique expedita voluptas.
-      </p>
-
-      <div class="row">
-        <div class="pesan-card">
-          <img
-            src="img/menu/arduino uno.jpg"
-            alt="Arduino uno"
-            class="pesan-card-img"
-          />
-          <h3 class="pesan-card-title">- Arduino Uno -</h3>
-          <p class="pesan-card-price">IDR 150K</p>
-        </div>
-        <div class="pesan-card">
-          <img
-            src="img/menu/arduino nano.jpg"
-            alt="Arduino nano"
-            class="pesan-card-img"
-          />
-          <h3 class="pesan-card-title">- Arduino nano -</h3>
-          <p class="pesan-card-price">IDR 100K</p>
-        </div>
-        <div class="pesan-card">
-          <img
-            src="img/menu/breadboard.jpg"
-            alt="breadboard"
-            class="pesan-card-img"
-          />
-          <h3 class="pesan-card-title">- breadboard -</h3>
-          <p class="pesan-card-price">IDR 80K</p>
-        </div>
-        <div class="pesan-card">
-          <img src="img/menu/relay.jpg" alt="relay" class="pesan-card-img" />
-          <h3 class="pesan-card-title">- relay -</h3>
-          <p class="pesan-card-price">IDR 25K</p>
-        </div>
-        <div class="pesan-card">
-          <img src="img/menu/LCD.jpg" alt="LCD" class="pesan-card-img" />
-          <h3 class="pesan-card-title">- LCD -</h3>
-          <p class="pesan-card-price">IDR 70K</p>
-        </div>
-        <div class="pesan-card">
-          <img
-            src="img/menu/ultrasonic sensor.jpg"
-            alt="ultrasonic sensor"
-            class="pesan-card-img"
-          />
-          <h3 class="pesan-card-title">- ultrasonic sensor -</h3>
-          <p class="pesan-card-price">IDR 150K</p>
-        </div>
-      </div>
-    </section>
-    <!-- Menu section end-->
-
-    <!-- Produk section start -->
-    <section class="products" id="products" x-data="products">
-      <h2>Produk Unggulan <span>AEJ</span></h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et rem,
-        recusandae perferendis velit ducimus placeat.
-      </p>
-
-      <div x-data="products" class="row">
-        <template x-for="(item, index) in items" x-key="index">
-        <div class="product-card">
-          <div class="product-icons">
-            <a href="#" @click.prevent="$store.cart.add(item)">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <use href="img/feather-sprite.svg#shopping-cart" />
-                </svg>
-            </a>
-            <a href="#" class="item-detail-button">
-              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-                  <use href="img/feather-sprite.svg#eye" />
-                </svg>
-              </a>
-          </div>
-          <div class="product-image">
-           <img :src="`img/products/${item.img}`" :alt="item.name">
-          </div>
-          <div class="product-content">
-            <h3 x-text="item.name"></h3>
-            <div class="product-stars">
-              <svg width="24" height="24" fill="currentColor" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-                  <use href="img/feather-sprite.svg#star" />
-                </svg>
-            </div>
-            <div class="product-price"> <span x-text="rupiah(item.price)"></span></div>
-          </div>
-        </div>
-        </template>
-      </div>
-    </section>
-    <!-- Produk section end -->
-
-    <!-- Contact section start -->
-    <section id="contact" class="contact">
-      <h2><span>Kontak</span> Kami</h2>
-      <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non, sequi!
-      </p>
-
-      <div class="row">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d990.0442944073477!2d110.45754376965014!3d-6.988400399563282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708d48e9b9ba5d%3A0xfd0af8ee0705c33a!2sAditya%20Electric%20Jaya!5e0!3m2!1sid!2sid!4v1752759324447!5m2!1sid!2sid"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          class="map"
-        ></iframe>
-        <form action="">
-          <div class="input-group">
-            <i data-feather="user"></i>
-            <input type="text" placeholder="nama" />
-          </div>
-          <div class="input-group">
-            <i data-feather="mail"></i>
-            <input type="text" placeholder="email" />
-          </div>
-          <div class="input-group">
-            <i data-feather="phone"></i>
-            <input type="text" placeholder="no hp" />
-          </div>
-          <button type="submit" class="btn">Kirim pesan</button>
-        </form>
-      </div>
-    </section>
-    <!-- Contact section end -->
-
-    <!-- footer start -->
-    <footer>
-      <div class="socials">
-        <a href="#"><i data-feather="instagram"></i></a>
-        <a href="#"><i data-feather="twitter"></i></a>
-        <a href="#"><i data-feather="facebook"></i></a>
-      </div>
-      <div class="links">
-        <a href="#home">home</a>
-        <a href="#about">Tentang kami</a>
-        <a href="#pesan">pemesanan</a>
-        <a href="#contact">kontak</a>
-      </div>
-
-      <div class="credit">
-        <p>Created by <a href="">Fransisco Aditya</a>. | &copy; 2025.</p>
-      </div>
-    </footer>
-    <!-- footer end -->
-
-    <!-- modal box item detail start-->
-    <div class="modal" id="item-detail-modal">
-      <div class="modal-container">
-        <a href="#" class="close-icon"><i data-feather="x"></i></a>
-        <div class="modal-content">
-          <img src="img/menu/Servo.png" alt="servo" />
-          <div class="product-content">
-            <h3>Produk 1</h3>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Voluptatem porro tempora, eveniet quae vero officia!
-            </p>
-            <div class="product-stars">
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-            </div>
-            <div class="product-price">IDR 20K <span>IDR 50K</span></div>
-            <a href="#"
-              ><i data-feather="shopping-cart"></i> <span>add to cart</span></a
-            >
-          </div>
-        </div>
-      </div>
     </div>
-    <!-- modal box item detail end-->
 
-    <!-- feather icons -->
     <script>
       feather.replace();
-    </script>
 
-    <!-- JS saya -->
-    <script src="js/script.js"></script>
-  </body>
+      const loginSection = document.getElementById('login-section');
+      const registerSection = document.getElementById('register-section');
+      const showRegisterLink = document.getElementById('show-register');
+      const showLoginLink = document.getElementById('show-login');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const loginMessage = document.getElementById('login-message');
+      const registerMessage = document.getElementById('register-message');
+      
+      function showMessage(element, text, isSuccess = false) {
+          element.textContent = text;
+          element.className = 'message';
+          if (isSuccess) {
+              element.classList.add('success');
+          }
+          element.style.display = 'block';
+      }
+      
+      showRegisterLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          loginSection.style.display = 'none';
+          registerSection.style.display = 'block';
+      });
+      
+      showLoginLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          registerSection.style.display = 'none';
+          loginSection.style.display = 'block';
+      });
+
+      loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          loginMessage.style.display = 'none';
+          const username = document.getElementById('login-username').value;
+          const password = document.getElementById('login-password').value;
+
+          const response = await fetch('php/LoginProcess.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username, password })
+          });
+          const result = await response.json();
+          
+          if (result.status === 'success') {
+              switch (result.role) {
+                  case 'admin': window.location.href = 'AdminDashboard.php'; break;
+                  case 'kasir': window.location.href = 'KasirDashboard.php'; break;
+                  case 'gudang': window.location.href = 'GudangDashboard.php'; break;
+                  default: window.location.href = 'HalamanAwal.php'; break;
+              }
+          } else {
+              showMessage(loginMessage, result.message);
+          }
+      });
+      
+      registerForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          registerMessage.style.display = 'none';
+          const username = document.getElementById('register-username').value;
+          const email = document.getElementById('register-email').value;
+          const password = document.getElementById('register-password').value;
+          const confirmPassword = document.getElementById('confirm-password').value;
+
+          if (password !== confirmPassword) {
+              showMessage(registerMessage, 'Password dan konfirmasi password tidak cocok.');
+              return;
+          }
+
+          const response = await fetch('php/RegisterProcess.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username, email, password }) 
+          });
+          const result = await response.json();
+          if (result.status === 'success') {
+              showMessage(registerMessage, result.message, true);
+              registerForm.reset();
+              setTimeout(() => {
+                 showLoginLink.click();
+                 showMessage(loginMessage, 'Registrasi berhasil, silakan login.', true);
+              }, 2000);
+          } else {
+              showMessage(registerMessage, result.message);
+          }
+      });
+
+      const formContainer = document.querySelector('.form-container');
+      
+      formContainer.addEventListener('click', function(e) {
+          const icon = e.target.closest('.toggle-password');
+          if (!icon) {
+              return;
+          }
+
+          const inputGroup = icon.parentElement;
+          const passwordField = inputGroup.querySelector('input');
+
+          if (passwordField) {
+              const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+              passwordField.setAttribute('type', type);
+              icon.setAttribute('data-feather', type === 'password' ? 'eye' : 'eye-off');
+              feather.replace();
+          }
+      });
+    </script>
+</body>
 </html>

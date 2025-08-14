@@ -51,10 +51,6 @@ itemDetailButtons.forEach((btn) => {
 };
 })
 
-itemDetailButtons.onclick = (e) => {
-  itemDetailModal.style.display = 'flex';
-  e.preventDefault();
-};
 
 // klik to close
 document.querySelector('.modal .close-icon').onclick = (e) => {
@@ -68,3 +64,27 @@ window.onclick = (e) => {
     itemDetailModal.style.display = 'none';
   }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Ambil semua link yang memiliki class .page-transition
+    const transitionLinks = document.querySelectorAll('a.page-transition');
+
+    transitionLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            // 1. Mencegah link berpindah halaman secara langsung
+            e.preventDefault();
+
+            // 2. Ambil URL tujuan dari link yang diklik
+            const destinationUrl = this.href;
+
+            // 3. Tambahkan class untuk memutar animasi keluar
+            document.body.classList.add('page-exit');
+
+            // 4. Tunggu animasi selesai (500ms, sesuai durasi di CSS)
+            setTimeout(() => {
+                // 5. Pindahkan pengguna ke halaman tujuan
+                window.location.href = destinationUrl;
+            }, 500);
+        });
+    });
+});
